@@ -16,7 +16,7 @@
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="VariableSizedGridViewSample.App">
       <m2:VisualElements DisplayName="Variable Sized GridView Sample" Square150x150Logo="Assets\Logo.png" Square30x30Logo="Assets\SmallLogo.png" Description="Powerd by flickr API" ForegroundText="light" BackgroundColor="#322400" ToastCapable="true">
-        <m2:DefaultTile ShortName="Varible Sized Grid" DefaultSize="square150x150Logo">
+        <m2:DefaultTile ShortName="Varible Sized GridView Sample" DefaultSize="square150x150Logo">
           <m2:ShowNameOnTiles>
             <m2:ShowOn Tile="square150x150Logo" />
           </m2:ShowNameOnTiles>
