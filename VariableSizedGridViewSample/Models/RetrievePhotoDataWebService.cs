@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+using System.Diagnostics;
+using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.Data.Xml.Dom;
-using Windows.Storage;
 
 namespace VariableSizedGridViewSample.Models
 {
@@ -67,43 +65,49 @@ namespace VariableSizedGridViewSample.Models
         public async Task<IList<PhotoItem>> GetAsync(string searchTag)
         {
             var results = new List<PhotoItem>();
-
-            var client = new HttpClient();
-
-            var requestUri = string.Format(
-                "{0}/{1}?method={2}&per_page={3}&api_key={4}&sort={5}&tags={6}&tag_mode=all&extras={7}",
-                EndPoint.AbsoluteUri,
-                Format,
-                Method,
-                PageCount,
-                FlickrConstants.API_KEY,
-                Sort,
-                searchTag.ToLower(),
-                Extras);
-
-            var response = await client.GetAsync(new Uri(requestUri));
-            response.EnsureSuccessStatusCode();
-
-            var xml = new XmlDocument();
-            var txt = await response.Content.ReadAsStringAsync();
-            xml.LoadXml(txt);
-            foreach (var photo in xml.GetElementsByTagName("photo"))
+            try
             {
-                var uri = string.Format("http://farm{0}.staticflickr.com/{1}/{2}_{3}.jpg",
-                    photo.Attributes.GetNamedItem("farm").NodeValue as string,
-                    photo.Attributes.GetNamedItem("server").NodeValue as string,
-                    photo.Attributes.GetNamedItem("id").NodeValue as string,
-                    photo.Attributes.GetNamedItem("secret").NodeValue as string);
+                var client = new HttpClient();
 
-                results.Add(new PhotoItem(
-                    photo.Attributes.GetNamedItem("id").NodeValue as string,
-                    photo.Attributes.GetNamedItem("title").NodeValue as string,
-                    uri,
-                    photo.Attributes.GetNamedItem("datetaken").NodeValue as string,
-                    photo.Attributes.GetNamedItem("owner").NodeValue as string,
-                    searchTag));
+                var requestUri = string.Format(
+                    "{0}/{1}?method={2}&per_page={3}&api_key={4}&sort={5}&tags={6}&tag_mode=all&extras={7}",
+                    EndPoint.AbsoluteUri,
+                    Format,
+                    Method,
+                    PageCount,
+                    FlickrConstants.API_KEY,
+                    Sort,
+                    searchTag.ToLower(),
+                    Extras);
+
+                var response = await client.GetAsync(new Uri(requestUri));
+                response.EnsureSuccessStatusCode();
+
+                var xml = new XmlDocument();
+                var txt = await response.Content.ReadAsStringAsync();
+                xml.LoadXml(txt);
+                foreach (var photo in xml.GetElementsByTagName("photo"))
+                {
+                    var uri = string.Format("http://farm{0}.staticflickr.com/{1}/{2}_{3}.jpg",
+                        photo.Attributes.GetNamedItem("farm").NodeValue as string,
+                        photo.Attributes.GetNamedItem("server").NodeValue as string,
+                        photo.Attributes.GetNamedItem("id").NodeValue as string,
+                        photo.Attributes.GetNamedItem("secret").NodeValue as string);
+
+                    results.Add(new PhotoItem(
+                        photo.Attributes.GetNamedItem("id").NodeValue as string,
+                        photo.Attributes.GetNamedItem("title").NodeValue as string,
+                        uri,
+                        photo.Attributes.GetNamedItem("datetaken").NodeValue as string,
+                        photo.Attributes.GetNamedItem("owner").NodeValue as string,
+                        searchTag));
+                }
+
             }
-
+            catch(WebException ex)
+            {
+                Debug.WriteLine(ex.ToString());
+            }
             return results;
         }
     }

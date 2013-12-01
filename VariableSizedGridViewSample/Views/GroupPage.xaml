@@ -79,7 +79,7 @@
             
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <VariableSizedWrapGrid ItemWidth="100" ItemHeight="80"/>
+                    <VariableSizedWrapGrid ItemWidth="100" ItemHeight="80" Margin="0,0,120,0"/>
                 </ItemsPanelTemplate>
             </GridView.ItemsPanel>
         </control:VariableSizedGridView>
