@@ -31,6 +31,32 @@
         <Style TargetType="GroupItem">
             <Setter Property="Margin" Value="0,0,70,0"/>
         </Style>
+        
+        <DataTemplate x:Key="GroupHeaderTemplate">
+            <Grid Margin="0,0,0,2">
+                <Button Foreground="{ThemeResource ApplicationHeaderForegroundThemeBrush}"
+									    Style="{StaticResource TextBlockButtonStyle}" 
+                                        Click="OnHeaderClick">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Header}" Margin="0,-11,10,10" Style="{StaticResource SubheaderTextBlockStyle}" TextWrapping="NoWrap" />
+                        <TextBlock Text="{StaticResource ChevronGlyph}" FontFamily="Segoe UI Symbol" Margin="0,-11,0,10" Style="{StaticResource SubheaderTextBlockStyle}" TextWrapping="NoWrap" />
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </DataTemplate>
+        
+        <DataTemplate x:Key="ItemTemplate">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Image Grid.RowSpan="2" Source="{Binding Uri}" Stretch="UniformToFill" VerticalAlignment="Top"/>
+                <Border Grid.Row="1" Background="#66000000" Visibility="{Binding IsShowTitle, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TextBlock Text="{Binding Title}" Padding="20,10" TextAlignment="Left" TextWrapping="Wrap" MaxLines="2" TextTrimming="CharacterEllipsis"/>
+                </Border>
+            </Grid>
+        </DataTemplate>
 
     </local:PageBase.Resources>
 
@@ -60,6 +86,7 @@
 			Padding="120,0,120,40"
             SizeChanged="OnSizeChanged"
 			ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}}"
+            ItemTemplate="{StaticResource ItemTemplate}"
             IsItemClickEnabled="True"
             ItemClick="OnItemClick"
 			SelectionMode="None"
@@ -72,21 +99,7 @@
             </GridView.ItemsPanel>
             
             <GridView.GroupStyle>
-				<GroupStyle>
-					<GroupStyle.HeaderTemplate>
-						<DataTemplate>
-							<Grid Margin="0,0,0,2">
-                                <Button Foreground="{ThemeResource ApplicationHeaderForegroundThemeBrush}"
-									    Style="{StaticResource TextBlockButtonStyle}" 
-                                        Click="OnHeaderClick">
-                                    <StackPanel Orientation="Horizontal">
-										<TextBlock Text="{Binding Header}" Margin="0,-11,10,10" Style="{StaticResource SubheaderTextBlockStyle}" TextWrapping="NoWrap" />
-										<TextBlock Text="{StaticResource ChevronGlyph}" FontFamily="Segoe UI Symbol" Margin="0,-11,0,10" Style="{StaticResource SubheaderTextBlockStyle}" TextWrapping="NoWrap" />
-									</StackPanel>
-								</Button>
-							</Grid>
-						</DataTemplate>
-					</GroupStyle.HeaderTemplate>
+                <GroupStyle HeaderTemplate="{StaticResource GroupHeaderTemplate}">
 					<GroupStyle.Panel>
 						<ItemsPanelTemplate>
 							<VariableSizedWrapGrid ItemWidth="100" ItemHeight="80"/>
@@ -94,21 +107,6 @@
 					</GroupStyle.Panel>
 				</GroupStyle>
 			</GridView.GroupStyle>
-            
-			<GridView.ItemTemplate>
-				<DataTemplate>
-					<Grid>
-						<Grid.RowDefinitions>
-							<RowDefinition Height="*"/>
-							<RowDefinition Height="Auto"/>
-						</Grid.RowDefinitions>
-						<Image Grid.RowSpan="2" Source="{Binding Uri}" Stretch="UniformToFill" VerticalAlignment="Top"/>
-                        <Border Grid.Row="1" Background="#66000000" Visibility="{Binding IsShowTitle, Converter={StaticResource BoolToVisibilityConverter}}">
-							<TextBlock Text="{Binding Title}" Padding="20,10" TextAlignment="Left" TextWrapping="Wrap" MaxLines="2" TextTrimming="CharacterEllipsis"/>
-						</Border>
-					</Grid>
-				</DataTemplate>
-			</GridView.ItemTemplate>
             
 		</control:VariableSizedGridView>
 
