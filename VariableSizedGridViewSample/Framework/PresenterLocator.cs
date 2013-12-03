@@ -27,12 +27,50 @@ namespace VariableSizedGridViewSample.Framework
         /// <summary>
         /// 指定された Presenter を管理対象に登録する
         /// </summary>
-        /// <typeparam name="TPresenter"></typeparam>
+        /// <typeparam name="TPresenter">登録対象の Presenter</typeparam>
+        public static void Register<TPresenter>() where TPresenter : IPresenter
+        {
+            Registoriy.Add(typeof(TPresenter), typeof(TPresenter));
+        }
+
+        /// <summary>
+        /// 指定された Presenter を View にひもづけて管理対象に登録する
+        /// </summary>
+        /// <typeparam name="TPresenter">登録対象の Presenter</typeparam>
+        /// <typeparam name="TView">ひもづける View</typeparam>
         public static void Register<TPresenter, TView>()
             where TPresenter : IPresenter
             where TView : FrameworkElement
         {
             Registoriy.Add(typeof(TView), typeof(TPresenter));
+        }
+
+        /// <summary>
+        /// 指定された View の Presenter を設定する
+        /// </summary>
+        /// <param name="viewType">ひもづける View</param>
+        /// <param name="presenter">設定する Presenter</param>
+        public static void Set(Type viewType, IPresenter presenter)
+        {
+            if (!Registoriy.ContainsKey(viewType))
+            {
+                Registoriy.Add(viewType, presenter.GetType());
+            }
+            Container[viewType] = presenter;
+        }
+
+        /// <summary>
+        /// 指定された Presenter を設定する
+        /// </summary> 
+        /// <typeparam name="TPresenter">キーとなる Presenter</typeparam>
+        /// <param name="presenter">設定する Presenter</param>
+        public static void Set<TPresenter>(TPresenter presenter) where TPresenter : IPresenter
+        {
+            if (!Registoriy.ContainsKey(typeof(TPresenter)))
+            {
+                Registoriy.Add(typeof(TPresenter), presenter.GetType());
+            }
+            Container[typeof(TPresenter)] = presenter;
         }
 
         /// <summary>
@@ -50,6 +88,21 @@ namespace VariableSizedGridViewSample.Framework
             }
 
             return Container[viewType];
+        }
+
+        /// <summary>
+        /// 指定された Presenter を取得する
+        /// </summary> 
+        /// <typeparam name="TPresenter">取得する Presenter</typeparam>
+        /// <returns>Presenter</returns>
+        public static TPresenter Get<TPresenter>() where TPresenter : IPresenter
+        {
+            if(!Container.ContainsKey(typeof(TPresenter)))
+            {
+                Container.Add(typeof(TPresenter), Activator.CreateInstance(typeof(TPresenter)) as IPresenter);
+            }
+
+            return (TPresenter)Container[typeof(TPresenter)];
         }
     }
 }

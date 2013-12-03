@@ -18,7 +18,7 @@ namespace VariableSizedGridViewSample.ViewModels
         /// <summary>
         /// 現在のアイテム
         /// </summary>
-        public PhotoItemViewModel CurrentItem 
+        public PhotoItemViewModel SelectedItem 
         { 
             get{ return this.currentItem; }
             set { this.SetProperty(ref this.currentItem, value); }

@@ -41,7 +41,7 @@ namespace VariableSizedGridViewSample.ViewModels
         /// <summary>
         /// 写真アイテム
         /// </summary>
-        [IgnoreDataMember]
+        [DataMember]
         public IList<PhotoItemViewModel> Items 
         { 
             get { return this.items; }

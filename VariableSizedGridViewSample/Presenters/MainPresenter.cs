@@ -94,6 +94,8 @@ namespace VariableSizedGridViewSample.Presenters
 
             ServiceLocator.SetLocatorProvider(() => ServiceContainer.Instance);
 
+            PresenterLocator.Set<MainPresenter>(this);
+
             // Presenter と View のひもづけ
             PresenterLocator.Register<TopPagePresenter, TopPage>();
             PresenterLocator.Register<GroupPagePresenter, GroupPage>();
@@ -168,8 +170,6 @@ namespace VariableSizedGridViewSample.Presenters
             Window.Current.Activate();
 
             SettingsPane.GetForCurrentView().CommandsRequested += this.OnCommandsRequested;
-
-            await this.GetData();
         }
 
         /// <summary>
@@ -208,17 +208,36 @@ namespace VariableSizedGridViewSample.Presenters
         /// 情報取得
         /// </summary>
         /// <returns>Task</returns>
-        public async Task GetData()
+        public void LoadData()
+        {
+            // セッションデータがあれば復元する
+            if (SuspensionManager.SessionState.ContainsKey("PhotoGroups"))
+            {
+                var mainViewModel = (MainViewModel)this.ViewModel;
+                var sessionData = SuspensionManager.SessionState["PhotoGroups"] as IList<PhotoGroupViewModel>;
+                foreach (var group in sessionData)
+                {
+                    mainViewModel.Groups.Add(group);
+                }
+            }
+            else
+            {
+                SuspensionManager.SessionState.Add("PhotoGroups", new List<PhotoGroupViewModel>());
+            }
+
+            // 非同期で情報取得をを開始
+            this.LasyLoad().ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// 情報取得
+        /// </summary>
+        /// <returns>Task</returns>
+        private async Task LasyLoad()
         {
             var mainViewModel = (MainViewModel)this.ViewModel;
 
             mainViewModel.IsBusy = true;
-
-            // 復元データがあれば生成する
-            if (!SuspensionManager.SessionState.ContainsKey("PhotoGroups"))
-            {
-                SuspensionManager.SessionState.Add("PhotoGroups", new List<PhotoGroupViewModel>());
-            }
 
             // 検索対象タグごとに写真データを取得してグループ化する
             foreach (var tag in SearchTags)
@@ -286,14 +305,14 @@ namespace VariableSizedGridViewSample.Presenters
 
                 group.LatestTaked = group.Items.Max(i => i.DateTaken);
 
+                // セッションデータにグループを追加する
+                ((IList<PhotoGroupViewModel>)SuspensionManager.SessionState["PhotoGroups"]).Add(group);
+
                 // 画面に追加したグループの描画を要求する
                 await this.dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     mainViewModel.Groups.Add(group);
                 });
-
-                // セッションデータにグループを追加する
-                ((IList<PhotoGroupViewModel>)SuspensionManager.SessionState["PhotoGroups"]).Add(group);
             }
 
             await this.dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>

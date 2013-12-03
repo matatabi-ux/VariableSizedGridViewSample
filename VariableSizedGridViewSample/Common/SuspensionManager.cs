@@ -115,15 +115,6 @@ namespace VariableSizedGridViewSample.Common
                     _sessionState = (Dictionary<string, object>)serializer.ReadObject(inStream.AsStreamForRead());
                 }
 
-                if (_sessionState.ContainsKey("PhotoGroups"))
-                {
-                    var sessionData = SuspensionManager.SessionState["PhotoGroups"] as IList<PhotoGroupViewModel>;
-                    foreach (var group in sessionData)
-                    {
-                        ViewModelLocator.Get<MainViewModel>().Groups.Add(group);
-                    }
-                }
-
                 // 登録されているフレームを保存された状態に復元します
                 foreach (var weakFrameReference in _registeredFrames)
                 {

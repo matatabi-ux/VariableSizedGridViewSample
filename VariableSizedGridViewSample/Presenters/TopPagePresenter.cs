@@ -16,18 +16,26 @@ namespace VariableSizedGridViewSample.Presenters
         /// </summary>
         /// <param name="sender">イベント発行者</param>
         /// <param name="e">イベント引数</param>
-        protected override void OnLoadState(object sender, Common.LoadStateEventArgs e)
+        protected override void OnLoadState(object sender, LoadStateEventArgs e)
         {
             base.OnLoadState(sender, e);
 
             var mainViewModel = ViewModelLocator.Get<MainViewModel>();
+
+            // データがなければ読み込む
+            if (mainViewModel.Groups.Count == 0)
+            {
+                PresenterLocator.Get<MainPresenter>().LoadData();
+            }
+
+            // セッションデータがあれば復元する
             if (e.PageState != null && e.PageState.ContainsKey("currentItem"))
             {
-                mainViewModel.CurrentItem = e.PageState["currentItem"] as PhotoItemViewModel;
+                mainViewModel.CurrentItem = mainViewModel.GetItem(e.PageState["currentItem"] as string);
             }
             if (e.PageState != null && e.PageState.ContainsKey("currentGroup"))
             {
-                mainViewModel.CurrentGroup = e.PageState["currentGroup"] as PhotoGroupViewModel;
+                mainViewModel.CurrentGroup = mainViewModel.GetGroup(e.PageState["currentGroup"] as string);
             }
             var viewModel = (TopPageViewModel)this.ViewModel;
 
@@ -43,11 +51,13 @@ namespace VariableSizedGridViewSample.Presenters
         /// <param name="e">イベント引数</param>
         protected override void OnSaveState(object sender, SaveStateEventArgs e)
         {
-            base.OnSaveState(sender, e);
-
             var mainViewModel = ViewModelLocator.Get<MainViewModel>();
-            e.PageState["currentItem"] = mainViewModel.CurrentItem;
-            e.PageState["currentGroup"] = mainViewModel.CurrentGroup;
+
+            // セッションデータに現在の状態を保存する
+            e.PageState["currentItem"] = mainViewModel.CurrentItem != null ? mainViewModel.CurrentItem.UniqueId : null;
+            e.PageState["currentGroup"] = mainViewModel.CurrentGroup.UniqueId;
+
+            base.OnSaveState(sender, e);
         }
 
         #region IGridPagePresenter
