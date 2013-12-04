@@ -60,7 +60,7 @@ namespace VariableSizedGridViewSample.Presenters
 
             // セッションデータに現在の状態を保存する
             e.PageState["currentItem"] = mainViewModel.CurrentItem != null ? mainViewModel.CurrentItem.UniqueId : null;
-            e.PageState["currentGroup"] = mainViewModel.CurrentGroup.UniqueId;
+            e.PageState["currentGroup"] = mainViewModel.CurrentGroup != null ? mainViewModel.CurrentGroup.UniqueId : null;
 
             base.OnSaveState(sender, e);
         }
