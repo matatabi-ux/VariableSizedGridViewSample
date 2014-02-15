@@ -29,18 +29,25 @@
             TODO: 現在の項目の詳細を表示するには、コンテンツを
                   次のグリッド内に配置する必要があります
         -->
-        <FlipView Grid.RowSpan="2" x:Name="contentRegion" ItemsSource="{Binding CurrentGroup.Items}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
+        <ScrollViewer ZoomMode="Enabled" Grid.RowSpan="2" >
+            <FlipView x:Name="contentRegion" ItemsSource="{Binding CurrentGroup.Items}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}"  Width="{Binding ActualWidth, ElementName=pageRoot, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=pageRoot, Mode=OneWay}" >
             <FlipView.ItemTemplate>
                 <DataTemplate>
-                    <Grid>
-                        <Image Source="{Binding Uri}" Stretch="Uniform"/>
-                        <Border Grid.Row="1" Background="#66000000" VerticalAlignment="Bottom">
-                            <TextBlock Text="{Binding Title}" Padding="80,40" TextAlignment="Left" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" Style="{StaticResource SubheaderTextBlockStyle}"/>
-                        </Border>
-                    </Grid>
+                        <Grid>
+                            <Image Source="{Binding Uri}" Stretch="Uniform"/>
+                            <Border Grid.Row="1" Background="#66000000" VerticalAlignment="Bottom">
+                                <TextBlock Padding="80,40" TextAlignment="Left" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" Style="{StaticResource SubheaderTextBlockStyle}">
+                                    <Run Text="Photo: "/>
+                                    <Run Text="{Binding Title}" />
+                                    <Run Text=" By "/>
+                                    <Run Text="{Binding OwnerName}" />
+                                </TextBlock>
+                            </Border>
+                        </Grid>
                 </DataTemplate>
             </FlipView.ItemTemplate>
         </FlipView>
+        </ScrollViewer>
 
         <!-- [戻る] ボタンおよびページ タイトル-->
         <Grid>

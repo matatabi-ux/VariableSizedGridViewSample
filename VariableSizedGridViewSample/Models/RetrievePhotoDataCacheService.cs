@@ -51,7 +51,7 @@ namespace VariableSizedGridViewSample.Models
                     photo.Attributes.GetNamedItem("title").NodeValue as string,
                     uri,
                     photo.Attributes.GetNamedItem("datetaken").NodeValue as string,
-                    photo.Attributes.GetNamedItem("owner").NodeValue as string,
+                    photo.Attributes.GetNamedItem("ownername").NodeValue as string,
                     searchTag));
             }
 

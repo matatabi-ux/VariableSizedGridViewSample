@@ -191,12 +191,11 @@ namespace VariableSizedGridViewSample.Presenters
         private static readonly IList<string> SearchTags = new List<string>()
         {
             "Ragdoll", "Norwegian Forest Cat", "Birman", "Maine Coon", "Somali",
-            "Japanese Bobtail", "Munchkin Cats","American Shorthair",
             "Abyssinian Cat",  "Scottish Fold", "British Shorthair", 
-            "Burmese Cats", "Egyptian Mau", "European Shorthair", "Havana Brown",
-            "Ocicat", "Russian Blue", "Singapura", "Snowshoe", "Tonkinese",
+            "Burmese Cats", 
+            "Ocicat", "Russian Blue", "Singapura", "Snowshoe", 
             "American Bobtail", "Javanese", "Persian Cats", 
-            "American Curl", "American Wirehair", 
+            "American Curl",
         };
 
         /// <summary>

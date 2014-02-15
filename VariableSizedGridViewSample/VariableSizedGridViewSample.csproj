@@ -179,21 +179,16 @@
     <None Include="Common\ReadMe.txt" />
     <None Include="VariableSizedGridViewSample_TemporaryKey.pfx" />
     <Content Include="Assets\Badge.scale-100.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Assets\Data\Abyssinian_Cat.xml" />
     <Content Include="Assets\Data\American_Bobtail.xml" />
     <Content Include="Assets\Data\American_Curl.xml" />
-    <Content Include="Assets\Data\American_Shorthair.xml" />
-    <Content Include="Assets\Data\American_Wirehair.xml" />
     <Content Include="Assets\Data\Birman.xml" />
     <Content Include="Assets\Data\British_Shorthair.xml" />
     <Content Include="Assets\Data\Burmese_Cats.xml" />
-    <Content Include="Assets\Data\Egyptian_Mau.xml" />
-    <Content Include="Assets\Data\European_Shorthair.xml" />
-    <Content Include="Assets\Data\Havana_Brown.xml" />
-    <Content Include="Assets\Data\Japanese_Bobtail.xml" />
     <Content Include="Assets\Data\Javanese.xml" />
     <Content Include="Assets\Data\Maine_Coon.xml" />
-    <Content Include="Assets\Data\Munchkin_Cats.xml" />
     <Content Include="Assets\Data\Norwegian_Forest_Cat.xml" />
     <Content Include="Assets\Data\Ocicat.xml" />
     <Content Include="Assets\Data\Persian_Cats.xml" />
@@ -203,9 +198,6 @@
     <Content Include="Assets\Data\Singapura.xml" />
     <Content Include="Assets\Data\Snowshoe.xml" />
     <Content Include="Assets\Data\Somali.xml" />
-    <Content Include="Assets\Data\Tonkinese.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Assets\Logo.scale-100.png" />
     <Content Include="Assets\SmallLogo.scale-100.png" />
     <Content Include="Assets\SplashScreen.scale-100.png" />
